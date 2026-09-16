@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Design Studio | ProudeWear</title>
+  <meta name="description"
+    content="Customizer Studio: Pick your fabric, neckline, sleeve cut, back embroidery, and submit your exact body measurements for a bespoke fit.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .customizer-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .stepper-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .step-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--charcoal-muted);
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .step-tab.active {
+      color: var(--deep-maroon);
+      background: var(--soft-blush);
+      border-bottom: 3px solid var(--antique-gold);
+    }
+
+    .step-tab .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--border-color);
+      color: var(--charcoal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .step-tab.active .step-num {
+      background: var(--deep-maroon);
+      color: var(--gold-light);
+    }
+
+    .custom-wizard-panel {
+      display: none;
+    }
+
+    .custom-wizard-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .swatch-card {
+      background: var(--white);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .swatch-card:hover,
+    .swatch-card.active {
+      border-color: var(--deep-maroon);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-3px);
+    }
+
+    .swatch-card.active {
+      background: var(--soft-blush);
+    }
+
+    .swatch-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--antique-gold);
+    }
+
+    .summary-sidebar {
+      position: sticky;
+      top: 100px;
+      background: var(--white);
+      border: 1.5px solid var(--antique-gold);
+      border-radius: var(--radius-md);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-item-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .measurement-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .form-field input {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--white);
+    }
+
+    @media (max-width: 992px) {
+      .customizer-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-bar">
+    Complimentary Global Express Delivery on Couture Orders Above ₹2,999
+  </div>
+
+  <!-- Shared Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="site-logo"><img src="images/logo.png" alt="Proude Wear" class="site-logo-img"></a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="design-your-blouse.html" class="nav-link">Design Your Blouse</a></li>
+          <li><a href="size-guide.html" class="nav-link">Size Guide</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="action-icon trigger-search" aria-label="Search"><i class="fas fa-search"></i></button>
+        
+        <a href="cart.html" class="action-icon"><i class="fas fa-shopping-bag"></i><span
+            class="badge-count cart-badge">0</span></a>
+        <button class="mobile-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="margin-bottom: 4rem;">
+    <div style="margin-top: 1.5rem;">
+      <h1 style="font-size: 2.2rem; color: var(--deep-maroon);">3D Blouse Customizer Studio</h1>
+      <p style="color: var(--charcoal-muted);">Craft your dream blouse step-by-step with real-time price estimation</p>
+    </div>
+
+    <div class="customizer-layout">
+      <!-- Left Main Wizard Area -->
+      <div>
+        <!-- Horizontal Stepper Bar -->
+        <div class="stepper-header">
+          <div class="step-tab active" onclick="setWizardStep(1)"><span class="step-num">1</span> Fabric</div>
+          <div class="step-tab" onclick="setWizardStep(2)"><span class="step-num">2</span> Neckline</div>
+          <div class="step-tab" onclick="setWizardStep(3)"><span class="step-num">3</span> Sleeves</div>
+          <div class="step-tab" onclick="setWizardStep(4)"><span class="step-num">4</span> Back</div>
+          <div class="step-tab" onclick="setWizardStep(5)"><span class="step-num">5</span> Embroidery</div>
+          <div class="step-tab" onclick="setWizardStep(6)"><span class="step-num">6</span> Measurements</div>
+        </div>
+
+        <!-- STEP 1: FABRIC -->
+        <div class="custom-wizard-panel active" id="panel1">
+          <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">Step 1: Choose Your Main Fabric</h3>
+          <div class="swatch-grid">
+            <div class="swatch-card active" onclick="selectCustomOption('fabric', 'Kanchipuram Silk', 1499, this)">
+              <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Silk">
+              <strong>Kanchipuram Silk</strong>
+              <span class="text-maroon">₹1,499</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('fabric', 'Banarasi Brocade', 1899, this)">
+              <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Banarasi">
+              <strong>Banarasi Brocade</strong>
+              <span class="text-maroon">₹1,899</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('fabric', 'Flowy Georgette', 1299, this)">
+              <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Georgette">
+              <strong>Flowy Georgette</strong>
+              <span class="text-maroon">₹1,299</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('fabric', 'Pure Chiffon', 1199, this)">
+              <img src="https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Chiffon">
+              <strong>Pure Chiffon</strong>
+              <span class="text-maroon">₹1,199</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('fabric', 'Handloom Cotton', 899, this)">
+              <img src="https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Cotton">
+              <strong>Handloom Cotton</strong>
+              <span class="text-maroon">₹899</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('fabric', 'Royal Velvet', 2299, this)">
+              <img src="https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=200&q=80"
+                class="swatch-circle" alt="Velvet">
+              <strong>Royal Velvet</strong>
+              <span class="text-maroon">₹2,299</span>
+            </div>
+          </div>
+          <div style="margin-top: 2rem; text-align: right;">
+            <button class="btn btn-primary" onclick="setWizardStep(2)">Next: Neckline <i
+                class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 2: NECKLINE -->
+        <div class="custom-wizard-panel" id="panel2">
+          <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">Step 2: Choose Neckline Silhouette</h3>
+          <div class="swatch-grid">
+            <div class="swatch-card active" onclick="selectCustomOption('neckline', 'Sweetheart', 0, this)">
+              <strong>Sweetheart</strong>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'Boat Neck', 0, this)"><strong>Boat
+                Neck</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'V-Neck', 0, this)"><strong>V-Neck</strong>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'Round Neck', 0, this)"><strong>Round
+                Neck</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'Square Neck', 0, this)"><strong>Square
+                Neck</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'Halter', 0, this)"><strong>Halter</strong>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'High Neck', 0, this)"><strong>High
+                Neck</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('neckline', 'Keyhole', 0, this)">
+              <strong>Keyhole</strong>
+            </div>
+          </div>
+          <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+            <button class="btn btn-secondary" onclick="setWizardStep(1)">Back</button>
+            <button class="btn btn-primary" onclick="setWizardStep(3)">Next: Sleeves <i
+                class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 3: SLEEVES -->
+        <div class="custom-wizard-panel" id="panel3">
+          <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">Step 3: Choose Sleeve Style</h3>
+          <div class="swatch-grid">
+            <div class="swatch-card active" onclick="selectCustomOption('sleeve', 'Sleeveless', 0, this)">
+              <strong>Sleeveless</strong>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Short (5&quot;)', 0, this)"><strong>Short
+                Sleeves</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Elbow (10&quot;)', 0, this)"><strong>Elbow
+                Length</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Full (21&quot;)', 0, this)"><strong>Full
+                Sleeves</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Puff Sleeves', 0, this)"><strong>Puff
+                Sleeves</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Bell Sleeves', 0, this)"><strong>Bell
+                Sleeves</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('sleeve', 'Cape Sleeves', 0, this)"><strong>Cape
+                Sleeves</strong></div>
+          </div>
+          <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+            <button class="btn btn-secondary" onclick="setWizardStep(2)">Back</button>
+            <button class="btn btn-primary" onclick="setWizardStep(4)">Next: Back Design <i
+                class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 4: BACK DESIGN -->
+        <div class="custom-wizard-panel" id="panel4">
+          <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">Step 4: Choose Back Cutout & Pattern</h3>
+          <div class="swatch-grid">
+            <div class="swatch-card active" onclick="selectCustomOption('back', 'Closed Back', 0, this)"><strong>Closed
+                Back</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('back', 'Keyhole Cutout', 0, this)"><strong>Keyhole
+                Cutout</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('back', 'Deep V-Back', 0, this)"><strong>Deep
+                V-Back</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('back', 'Backless Dori', 0, this)"><strong>Backless
+                Dori</strong></div>
+            <div class="swatch-card" onclick="selectCustomOption('back', 'Tie-Back Bow', 0, this)"><strong>Tie-Back
+                Bow</strong></div>
+          </div>
+          <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+            <button class="btn btn-secondary" onclick="setWizardStep(3)">Back</button>
+            <button class="btn btn-primary" onclick="setWizardStep(5)">Next: Embroidery <i
+                class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 5: EMBROIDERY -->
+        <div class="custom-wizard-panel" id="panel5">
+          <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">Step 5: Select Hand Embroidery Work</h3>
+          <div class="swatch-grid">
+            <div class="swatch-card active" onclick="selectCustomOption('embroidery', 'None (Plain Fabric)', 0, this)">
+              <strong>Plain Fabric</strong>
+              <span class="text-muted">+₹0</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('embroidery', 'Light Thread Work', 350, this)">
+              <strong>Light Thread Work</strong>
+              <span class="text-maroon">+₹350</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('embroidery', 'Traditional Zari Work', 600, this)">
+              <strong>Zari Work</strong>
+              <span class="text-maroon">+₹600</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('embroidery', 'Stone & Mirror Work', 850, this)">
+              <strong>Stone & Mirror Work</strong>
+              <span class="text-maroon">+₹850</span>
+            </div>
+            <div class="swatch-card" onclick="selectCustomOption('embroidery', 'Heavy Bridal Embroidery', 1500, this)">
+              <strong>Heavy Bridal Maggam</strong>
+              <span class="text-maroon">+₹1,500</span>
+            </div>
+          </div>
+          <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+            <button class="btn btn-secondary" onclick="setWizardStep(4)">Back</button>
+            <button class="btn btn-primary" onclick="setWizardStep(6)">Next: Measurements <i
+                class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 6: MEASUREMENTS -->
+        <div class="custom-wizard-panel" id="panel6">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.3rem;">Step 6: Submit Body Measurements (Inches)</h3>
+            <a href="size-guide.html" target="_blank"
+              style="color: var(--antique-gold); font-size: 0.9rem; text-decoration: underline;">Not sure? → Size
+              Guide</a>
+          </div>
+
+          <div class="measurement-form-grid">
+            <div class="form-field"><label>Bust Size (inches)</label><input type="number" id="mBust" value="36"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field"><label>Under Bust (inches)</label><input type="number" id="mUnderBust" value="30"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field"><label>Waist (inches)</label><input type="number" id="mWaist" value="28"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field"><label>Shoulder Width (inches)</label><input type="number" id="mShoulder" value="14"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field"><label>Armhole (inches)</label><input type="number" id="mArmhole" value="15"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field"><label>Sleeve Length (inches)</label><input type="number" id="mSleeveLen" value="6"
+                onchange="updateSummaryState()"></div>
+            <div class="form-field" style="grid-column: span 2;"><label>Blouse Length (inches)</label><input
+                type="number" id="mBlouseLen" value="14" onchange="updateSummaryState()"></div>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+            <button class="btn btn-secondary" onclick="setWizardStep(5)">Back</button>
+            <button class="btn btn-accent btn-lg" onclick="saveCustomBlouseAndCheckout()"><i
+                class="fas fa-shopping-bag"></i> Add Custom Blouse to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sticky Summary Sidebar -->
+      <aside class="summary-sidebar">
+        <h3 style="color: var(--deep-maroon); font-size: 1.25rem; margin-bottom: 1rem; text-align: center;">Your Custom
+          Blouse</h3>
+
+        <div style="margin-bottom: 1.5rem; text-align: center;">
+          <img id="summaryFabricImg"
+            src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80"
+            style="width: 100%; height: 160px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);"
+            alt="Selected Fabric">
+        </div>
+
+        <div class="summary-item-row"><span>Fabric:</span><strong id="sumFabric">Kanchipuram Silk</strong></div>
+        <div class="summary-item-row"><span>Neckline:</span><strong id="sumNeckline">Sweetheart</strong></div>
+        <div class="summary-item-row"><span>Sleeves:</span><strong id="sumSleeve">Sleeveless</strong></div>
+        <div class="summary-item-row"><span>Back:</span><strong id="sumBack">Closed Back</strong></div>
+        <div class="summary-item-row"><span>Embroidery:</span><strong id="sumEmbroidery">Plain Fabric</strong></div>
+
+        <div
+          style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid var(--antique-gold); text-align: center;">
+          <div style="font-size: 0.85rem; color: var(--charcoal-muted);">Estimated Total Price</div>
+          <div style="font-size: 2rem; font-weight: 700; color: var(--deep-maroon);" id="sumTotalPrice">₹1,499</div>
+        </div>
+
+        <button class="btn btn-primary" style="width: 100%; margin-top: 1.2rem;" onclick="setWizardStep(6)">Customize &
+          Order</button>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="searchModal">
+    <div class="search-box-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.4rem;">Search Blouses</h3>
+        <button id="closeSearchModal" style="font-size: 1.5rem; color: var(--charcoal-muted);">&times;</button>
+      </div>
+      <input type="text" placeholder="Search by fabric, neckline...">
+    </div>
+  </div>
+
+  <!-- Shared Floating WhatsApp Button -->
+  <a href="https://wa.me/91XXXXXXXXXX" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp"><i
+      class="fab fa-whatsapp"></i></a>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="trust-badges-row">
+        <div class="trust-badge-item"><i class="fas fa-shield-alt"></i>
+          <h4>Secure Payment</h4>
+          <p>100% Encrypted</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-undo-alt"></i>
+          <h4>Easy Returns</h4>
+          <p>Hassle-Free Returns</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-cut"></i>
+          <h4>Custom Stitching</h4>
+          <p>Tailored precisely</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-award"></i>
+          <h4>Quality Checked</h4>
+          <p>Double Quality Inspection</p>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Shop & Create</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Catalog</a></li>
+            <li><a href="design-your-blouse.html">Custom Design Studio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Customer Support</h3>
+          <ul class="footer-links">
+            <li><a href="size-guide.html">Size Guide & Fit</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="about.html">About ProudeWear</a></li>
+            <li><a href="about.html#craftsmanship">Artisan Heritage</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Newsletter</h3>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email">
+            <button class="btn btn-accent btn-sm" onclick="showToast('Subscribed to ProudeWear!')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 ProudeWear. All Rights Reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const customConfig = {
+      fabric: 'Kanchipuram Silk',
+      fabricPrice: 1499,
+      neckline: 'Sweetheart',
+      sleeve: 'Sleeveless',
+      back: 'Closed Back',
+      embroidery: 'Plain Fabric',
+      embroideryPrice: 0,
+      image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80'
+    };
+
+    function setWizardStep(stepNum) {
+      document.querySelectorAll('.step-tab').forEach((tab, idx) => {
+        if (idx + 1 === stepNum) tab.classList.add('active');
+        else tab.classList.remove('active');
+      });
+
+      document.querySelectorAll('.custom-wizard-panel').forEach((panel, idx) => {
+        if (idx + 1 === stepNum) panel.classList.add('active');
+        else panel.classList.remove('active');
+      });
+    }
+
+    function selectCustomOption(category, value, priceAdd, element) {
+      const parentGrid = element.parentElement;
+      parentGrid.querySelectorAll('.swatch-card').forEach(c => c.classList.remove('active'));
+      element.classList.add('active');
+
+      if (category === 'fabric') {
+        customConfig.fabric = value;
+        customConfig.fabricPrice = priceAdd;
+        const img = element.querySelector('img')?.src;
+        if (img) {
+          customConfig.image = img;
+          document.getElementById('summaryFabricImg').src = img;
+        }
+      } else if (category === 'neckline') {
+        customConfig.neckline = value;
+      } else if (category === 'sleeve') {
+        customConfig.sleeve = value;
+      } else if (category === 'back') {
+        customConfig.back = value;
+      } else if (category === 'embroidery') {
+        customConfig.embroidery = value;
+        customConfig.embroideryPrice = priceAdd;
+      }
+
+      updateSummaryState();
+    }
+
+    function updateSummaryState() {
+      document.getElementById('sumFabric').textContent = customConfig.fabric;
+      document.getElementById('sumNeckline').textContent = customConfig.neckline;
+      document.getElementById('sumSleeve').textContent = customConfig.sleeve;
+      document.getElementById('sumBack').textContent = customConfig.back;
+      document.getElementById('sumEmbroidery').textContent = customConfig.embroidery;
+
+      const totalPrice = customConfig.fabricPrice + customConfig.embroideryPrice;
+      document.getElementById('sumTotalPrice').textContent = '₹' + totalPrice.toLocaleString();
+    }
+
+    function saveCustomBlouseAndCheckout() {
+      const totalPrice = customConfig.fabricPrice + customConfig.embroideryPrice;
+      const bust = document.getElementById('mBust').value || '36';
+
+      const customItem = {
+        id: 'CUSTOM-' + Math.floor(Math.random() * 9000 + 1000),
+        name: `Bespoke ${customConfig.fabric} Blouse`,
+        price: totalPrice,
+        image: customConfig.image,
+        size: `Custom (${bust}" Bust)`,
+        sleeve: customConfig.sleeve,
+        back: customConfig.back,
+        fabric: customConfig.fabric,
+        quantity: 1
+      };
+
+      addToCart(customItem);
+      window.location.href = 'cart.html';
+    }
+  </script>
+</body>
+
+</html>

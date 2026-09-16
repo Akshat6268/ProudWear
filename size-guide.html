@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Size Guide & Fit | ProudeWear</title>
+  <meta name="description"
+    content="Find your ideal saree blouse size with our interactive measurement calculator, 7-point visual measuring guide, and standard XS-XL size chart.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .size-calc-card {
+      background: var(--white);
+      border: 1.5px solid var(--antique-gold);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      margin: 2rem 0;
+    }
+
+    .unit-toggle-btn {
+      padding: 4px 12px;
+      border: 1px solid var(--border-color);
+      background: var(--ivory);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .unit-toggle-btn.active {
+      background: var(--deep-maroon);
+      color: var(--white);
+      border-color: var(--deep-maroon);
+    }
+
+    .diagram-box {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      margin: 3rem 0;
+    }
+
+    .callout-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .callout-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 0.9rem;
+    }
+
+    .callout-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--deep-maroon);
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .size-table-wrap {
+      overflow-x: auto;
+      margin: 2rem 0;
+    }
+
+    .size-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .size-table th {
+      background: var(--deep-maroon);
+      color: var(--gold-light);
+      padding: 1rem;
+      font-family: var(--font-heading);
+    }
+
+    .size-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .size-table tr:nth-child(even) {
+      background: #FAF8F5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    Complimentary Global Express Delivery on Couture Orders Above ₹2,999
+  </div>
+
+  <!-- Shared Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="site-logo"><img src="images/logo.png" alt="Proude Wear" class="site-logo-img"></a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="design-your-blouse.html" class="nav-link">Design Your Blouse</a></li>
+          <li><a href="size-guide.html" class="nav-link">Size Guide</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="action-icon trigger-search" aria-label="Search"><i class="fas fa-search"></i></button>
+        
+        <a href="cart.html" class="action-icon"><i class="fas fa-shopping-bag"></i><span
+            class="badge-count cart-badge">0</span></a>
+        <button class="mobile-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Section 1: Heading & Intro -->
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <h1 style="font-size: 2.3rem; color: var(--deep-maroon);">Find My Perfect Size</h1>
+      <p style="color: var(--charcoal-muted); max-width: 600px; margin: 8px auto 0 auto;">
+        Use our instant size calculator or follow our 7-point visual measuring guide to ensure your custom blouse fits
+        like a glove.
+      </p>
+    </div>
+
+    <!-- Section 2 & 3: Measurement Form & Result Card -->
+    <div class="size-calc-card">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h3 style="font-size: 1.4rem; color: var(--deep-maroon);">Interactive Size Calculator</h3>
+
+        <div
+          style="display: flex; align-items: center; gap: 4px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden;">
+          <button class="unit-toggle-btn active" id="btnInches" onclick="setUnit('inches')">Inches</button>
+          <button class="unit-toggle-btn" id="btnCm" onclick="setUnit('cm')">CM</button>
+        </div>
+      </div>
+
+      <form id="sizeCalcForm" onsubmit="calculateSize(event)">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem;">
+          <div class="form-field">
+            <label>1. Bust Size (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcBust" placeholder="e.g. 36" step="0.5" required>
+          </div>
+          <div class="form-field">
+            <label>2. Under Bust (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcUnderBust" placeholder="e.g. 30" step="0.5">
+          </div>
+          <div class="form-field">
+            <label>3. Waist (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcWaist" placeholder="e.g. 28" step="0.5">
+          </div>
+          <div class="form-field">
+            <label>4. Shoulder Width (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcShoulder" placeholder="e.g. 14" step="0.5">
+          </div>
+          <div class="form-field">
+            <label>5. Armhole (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcArmhole" placeholder="e.g. 15" step="0.5">
+          </div>
+          <div class="form-field">
+            <label>6. Sleeve Length (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcSleeve" placeholder="e.g. 6" step="0.5">
+          </div>
+          <div class="form-field">
+            <label>7. Blouse Length (<span class="unitLabel">inches</span>)</label>
+            <input type="number" id="calcBlouseLen" placeholder="e.g. 14" step="0.5">
+          </div>
+        </div>
+
+        <div style="margin-top: 1.8rem; text-align: center;">
+          <button type="submit" class="btn btn-primary btn-lg">Calculate Recommended Size</button>
+        </div>
+      </form>
+
+      <!-- Result Card -->
+      <div id="sizeResultBox"
+        style="display: none; margin-top: 2rem; padding: 1.5rem; background: var(--soft-blush); border-radius: var(--radius-md); text-align: center; border: 1px solid var(--antique-gold);">
+        <h4 style="font-size: 1.1rem; color: var(--charcoal-muted);">Your Fit Analysis:</h4>
+        <div style="font-size: 2.2rem; font-weight: 700; color: var(--deep-maroon); margin: 6px 0;" id="recSizeText">
+          Recommended Size: M</div>
+        <p style="font-size: 0.9rem; color: var(--charcoal);" id="recSubtext">Based on your bust measurement of 36
+          inches, standard Size M provides an optimal tailored fit with 2-inch built-in margins.</p>
+      </div>
+    </div>
+
+    <!-- Section 4: Visual Measurement Guide -->
+    <div class="diagram-box">
+      <div class="section-heading" style="margin-bottom: 1.5rem;">
+        <h2>7-Point Measuring Callout Guide</h2>
+        <p>Follow these exact measurement instructions using a flexible measuring tape</p>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <img src="https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=800&q=80"
+          style="max-width: 550px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin: 0 auto;"
+          alt="Blouse Measuring Diagram">
+      </div>
+
+      <div class="callout-list">
+        <div class="callout-item">
+          <div class="callout-num">1</div>
+          <div><strong>Bust:</strong> Measure around the fullest part of your bust while wearing your regular bra.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">2</div>
+          <div><strong>Under Bust:</strong> Measure directly below the bust line where the blouse rib band sits.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">3</div>
+          <div><strong>Waist:</strong> Measure around your natural waistline just above the navel.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">4</div>
+          <div><strong>Shoulder:</strong> Measure across the back from shoulder tip to shoulder tip.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">5</div>
+          <div><strong>Armhole:</strong> Wrap the tape around the arm socket where the sleeve attaches.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">6</div>
+          <div><strong>Sleeve Length:</strong> Measure from the shoulder tip down to desired sleeve hem.</div>
+        </div>
+        <div class="callout-item">
+          <div class="callout-num">7</div>
+          <div><strong>Blouse Length:</strong> Measure from highest shoulder point down to desired lower waist hem.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Standard Size Chart Table -->
+    <div style="margin: 4rem 0;">
+      <div class="section-heading">
+        <h2>Standard Size Chart Table</h2>
+        <p>All measurements below are body measurements in inches (and cm equivalent)</p>
+      </div>
+
+      <div class="size-table-wrap">
+        <table class="size-table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Bust (Inches / CM)</th>
+              <th>Under Bust (Inches / CM)</th>
+              <th>Waist (Inches / CM)</th>
+              <th>Shoulder (Inches)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>XS</strong></td>
+              <td>30" - 31" (76-79 cm)</td>
+              <td>25" - 26" (63-66 cm)</td>
+              <td>24" - 25" (61-64 cm)</td>
+              <td>13.5"</td>
+            </tr>
+            <tr>
+              <td><strong>S</strong></td>
+              <td>32" - 34" (81-86 cm)</td>
+              <td>27" - 28" (68-71 cm)</td>
+              <td>26" - 27" (66-69 cm)</td>
+              <td>14.0"</td>
+            </tr>
+            <tr>
+              <td><strong>M</strong></td>
+              <td>35" - 37" (89-94 cm)</td>
+              <td>29" - 30" (73-76 cm)</td>
+              <td>28" - 29" (71-74 cm)</td>
+              <td>14.5"</td>
+            </tr>
+            <tr>
+              <td><strong>L</strong></td>
+              <td>38" - 40" (96-101 cm)</td>
+              <td>31" - 32" (78-81 cm)</td>
+              <td>30" - 32" (76-81 cm)</td>
+              <td>15.0"</td>
+            </tr>
+            <tr>
+              <td><strong>XL</strong></td>
+              <td>41" - 43" (104-109 cm)</td>
+              <td>33" - 35" (83-89 cm)</td>
+              <td>33" - 35" (84-89 cm)</td>
+              <td>15.5"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 6: WhatsApp CTA -->
+    <div
+      style="background: var(--white); border-radius: var(--radius-lg); padding: 3rem 2rem; border: 1px solid var(--border-color); text-align: center; margin-bottom: 4rem;">
+      <h3 style="font-size: 1.8rem; color: var(--deep-maroon); margin-bottom: 0.5rem;">Still Confused About Your
+        Measurements?</h3>
+      <p style="color: var(--charcoal-muted); margin-bottom: 1.5rem;">Chat directly with our master tailor for 1-on-1
+        virtual fitting support via WhatsApp.</p>
+      <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="btn btn-accent btn-lg"
+        style="background-color: #25D366; border-color: #25D366; color: var(--white);">
+        <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Chat with Master Tailor
+      </a>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="searchModal">
+    <div class="search-box-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.4rem;">Search Blouses</h3>
+        <button id="closeSearchModal" style="font-size: 1.5rem; color: var(--charcoal-muted);">&times;</button>
+      </div>
+      <input type="text" placeholder="Search by fabric, neckline...">
+    </div>
+  </div>
+
+  <!-- Shared Floating WhatsApp Button -->
+  <a href="https://wa.me/91XXXXXXXXXX" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp"><i
+      class="fab fa-whatsapp"></i></a>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="trust-badges-row">
+        <div class="trust-badge-item"><i class="fas fa-shield-alt"></i>
+          <h4>Secure Payment</h4>
+          <p>100% Encrypted</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-undo-alt"></i>
+          <h4>Easy Returns</h4>
+          <p>Hassle-Free Returns</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-cut"></i>
+          <h4>Custom Stitching</h4>
+          <p>Tailored precisely</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-award"></i>
+          <h4>Quality Checked</h4>
+          <p>Double Quality Inspection</p>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Shop & Create</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Catalog</a></li>
+            <li><a href="design-your-blouse.html">Custom Design Studio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Customer Support</h3>
+          <ul class="footer-links">
+            <li><a href="size-guide.html">Size Guide & Fit</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="about.html">About ProudeWear</a></li>
+            <li><a href="about.html#craftsmanship">Artisan Heritage</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Newsletter</h3>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email">
+            <button class="btn btn-accent btn-sm" onclick="showToast('Subscribed to ProudeWear!')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 ProudeWear. All Rights Reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    let currentUnit = 'inches';
+
+    function setUnit(unit) {
+      currentUnit = unit;
+      document.getElementById('btnInches').classList.toggle('active', unit === 'inches');
+      document.getElementById('btnCm').classList.toggle('active', unit === 'cm');
+      document.querySelectorAll('.unitLabel').forEach(l => l.textContent = unit);
+    }
+
+    function calculateSize(e) {
+      e.preventDefault();
+      let bust = parseFloat(document.getElementById('calcBust').value);
+
+      if (currentUnit === 'cm') {
+        bust = bust / 2.54; // Convert cm to inches for logic
+      }
+
+      let recSize = 'M';
+      if (bust < 32) recSize = 'XS';
+      else if (bust <= 34) recSize = 'S';
+      else if (bust <= 37) recSize = 'M';
+      else if (bust <= 40) recSize = 'L';
+      else recSize = 'XL';
+
+      const resultBox = document.getElementById('sizeResultBox');
+      document.getElementById('recSizeText').textContent = `Recommended Size: ${recSize}`;
+      document.getElementById('recSubtext').textContent = `Based on your bust measurement of ${document.getElementById('calcBust').value} ${currentUnit}, standard Size ${recSize} provides a comfortable, tailored fit.`;
+
+      resultBox.style.display = 'block';
+      resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+
+</html>

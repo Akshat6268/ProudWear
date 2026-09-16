@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Product | ProudeWear</title>
+  <meta name="description" id="pageMeta" content="Handcrafted Saree Blouse. Custom size & sleeve options available.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .gallery-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .main-img-box {
+      width: 100%;
+      height: 520px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #FDFBF7;
+    }
+
+    .main-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .thumbs-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .thumb-item {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+
+    .thumb-item.active, .thumb-item:hover {
+      border-color: var(--antique-gold);
+      opacity: 1;
+    }
+
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .option-selector-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .option-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--deep-maroon);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .option-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .opt-btn.active, .opt-btn:hover {
+      border-color: var(--deep-maroon);
+      background: var(--deep-maroon);
+      color: var(--white);
+    }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      width: 120px;
+      overflow: hidden;
+    }
+
+    .qty-stepper button {
+      width: 36px;
+      height: 36px;
+      background: var(--soft-blush);
+      font-weight: 600;
+    }
+
+    .qty-stepper input {
+      width: 48px;
+      text-align: center;
+      border: none;
+      font-weight: 600;
+    }
+
+    .complete-look-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      margin: 3rem 0;
+    }
+
+    .look-items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .product-detail-grid { grid-template-columns: 1fr; }
+      .main-img-box { height: 400px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    Complimentary Global Express Delivery on Couture Orders Above ₹2,999
+  </div>
+
+  <!-- Shared Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="site-logo">
+        <img src="images/logo.png" alt="Proude Wear" class="site-logo-img">
+      </a>
+
+      <!-- Minimalist Navigation Links: Shop | Custom Design | About | Contact -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="design-your-blouse.html" class="nav-link">Design Your Blouse</a></li>
+          <li><a href="size-guide.html" class="nav-link">Size Guide</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="header-actions">
+        <button class="action-icon trigger-search" aria-label="Search"><i class="fas fa-search"></i></button>
+        <button class="action-icon theme-toggle" aria-label="Toggle Dark Mode" style="font-size: 1.1rem;"><i class="fas fa-moon"></i></button>
+        <a href="cart.html" class="action-icon" aria-label="Cart">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge">0</span>
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" style="margin-top: 1.5rem;">
+      <a href="index.html">Home</a> <span>/</span>
+      <a href="shop.html">Shop</a> <span>/</span>
+      <span class="text-maroon" id="breadcrumbName">Product</span>
+    </div>
+
+    <!-- Main Product Layout -->
+    <div class="product-detail-grid">
+      <!-- Left: Image Gallery -->
+      <div class="gallery-column">
+        <div class="main-img-box">
+          <img id="mainProductImg" src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80" alt="Royal Kanchipuram Silk Blouse">
+        </div>
+        <div class="thumbs-row">
+          <div class="thumb-item active" onclick="swapImage(this, 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80')">
+            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=200&q=80" alt="Thumb 1">
+          </div>
+          <div class="thumb-item" onclick="swapImage(this, 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80')">
+            <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=200&q=80" alt="Thumb 2">
+          </div>
+          <div class="thumb-item" onclick="swapImage(this, 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80')">
+            <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=200&q=80" alt="Thumb 3">
+          </div>
+          <div class="thumb-item" onclick="swapImage(this, 'https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=1000&q=80')">
+            <img src="https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=200&q=80" alt="Thumb 4">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Product Information & Customization Selectors -->
+      <div>
+        <h1 id="detailTitle" style="font-size: 2.2rem; margin-bottom: 0.5rem;">Product Title</h1>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+          <span id="detailStars" style="color: var(--antique-gold); font-size: 1.1rem;">★★★★★</span>
+          <span style="font-weight: 600; font-size: 0.95rem;">4.9</span>
+          <span id="detailReviews" style="color: var(--charcoal-muted); font-size: 0.9rem;">(0 Verified Customer Reviews)</span>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem;">
+          <span id="detailPrice" style="font-size: 2rem; font-weight: 700; color: var(--deep-maroon);">₹0</span>
+          <span id="detailOriginalPrice" style="font-size: 1.2rem; color: var(--charcoal-muted); text-decoration: line-through;"></span>
+          <span id="detailBadge" style="background: var(--soft-blush); color: var(--deep-maroon); padding: 4px 10px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; display:none;"></span>
+        </div>
+
+        <!-- Specifications List -->
+        <div style="background: var(--white); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.8rem; font-size: 0.9rem;">
+        <div style="background: var(--white); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.8rem; font-size: 0.9rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div><strong>Fabric:</strong> <span id="specFabric">Silk</span></div>
+            <div><strong>Neckline:</strong> <span id="specNeckline">Sweetheart</span></div>
+            <div><strong>Occasion:</strong> <span id="specOccasion">Festive</span></div>
+            <div><strong>Closure:</strong> Front Hook & Eye</div>
+          </div>
+        </div>
+
+        <!-- Size Selector -->
+        <div class="option-selector-group">
+          <div class="option-label">
+            <span>Select Size</span>
+            <a href="size-guide.html" style="color: var(--antique-gold); font-weight: 400; text-decoration: underline;">Size Guide</a>
+          </div>
+          <div class="option-btns" id="sizeOptions">
+            <button class="opt-btn">XS</button>
+            <button class="opt-btn">S</button>
+            <button class="opt-btn active">M</button>
+            <button class="opt-btn">L</button>
+            <button class="opt-btn">XL</button>
+            <a href="design-your-blouse.html" class="opt-btn" style="background: var(--gold-light); border-color: var(--antique-gold); font-weight: 600; color: var(--deep-maroon);">+ Custom Fitting</a>
+          </div>
+        </div>
+
+        <!-- Sleeve Selector -->
+        <div class="option-selector-group">
+          <div class="option-label"><span>Sleeve Length</span></div>
+          <div class="option-btns" id="sleeveOptions">
+            <button class="opt-btn active">Short (5")</button>
+            <button class="opt-btn">Elbow (10")</button>
+            <button class="opt-btn">Full (21")</button>
+          </div>
+        </div>
+
+        <!-- Back Design Selector -->
+        <div class="option-selector-group">
+          <div class="option-label"><span>Back Design</span></div>
+          <div class="option-btns" id="backOptions">
+            <button class="opt-btn">Closed Back</button>
+            <button class="opt-btn active">Keyhole Cutout</button>
+            <button class="opt-btn">Deep V Back</button>
+          </div>
+        </div>
+
+        <!-- Quantity & Add to Cart -->
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
+          <div class="qty-stepper">
+            <button onclick="updateQty(-1)">-</button>
+            <input type="text" id="productQty" value="1" readonly>
+            <button onclick="updateQty(1)">+</button>
+          </div>
+          
+          <button class="btn btn-primary btn-lg" id="addToCartMainBtn" style="flex: 1; min-width: 200px;">
+            <i class="fas fa-shopping-bag"></i> Add to Cart
+          </button>
+
+          
+        </div>
+
+        <!-- Trust Badges & WhatsApp Helper -->
+        <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: var(--charcoal-muted);">
+            <span><i class="fas fa-check-circle text-gold"></i> 100% Custom Tailored</span>
+            <span><i class="fas fa-truck text-gold"></i> Free Pan-India Shipping</span>
+            <span><i class="fas fa-sync text-gold"></i> 10-Day Free Alterations</span>
+            <span><i class="fas fa-shield-alt text-gold"></i> Guaranteed Perfect Fit</span>
+          </div>
+
+          <a href="https://wa.me/91XXXXXXXXXX" target="_blank" style="color: #25D366; font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;">
+            <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Chat with our master tailor for sizing help
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BELOW THE FOLD: SEE IT ON DIFFERENT SAREES -->
+    <section style="margin-top: 5rem;">
+      <div class="section-heading">
+        <h2>See it on Different Sarees</h2>
+        <p>Preview how this Royal Silk blouse pairs with different saree textiles</p>
+      </div>
+      <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+        <div class="circle-tile" onclick="previewSareePair('Kanchipuram Silk', 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80')">
+          <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=200&q=80" class="tile-img" alt="Kanchipuram">
+          <span>Kanchipuram Silk</span>
+        </div>
+        <div class="circle-tile" onclick="previewSareePair('Banarasi Brocade', 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80')">
+          <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=200&q=80" class="tile-img" alt="Banarasi">
+          <span>Banarasi</span>
+        </div>
+        <div class="circle-tile" onclick="previewSareePair('Organza Tissue', 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80')">
+          <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=200&q=80" class="tile-img" alt="Organza">
+          <span>Organza</span>
+        </div>
+        <div class="circle-tile" onclick="previewSareePair('Flowy Georgette', 'https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=1000&q=80')">
+          <img src="https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=200&q=80" class="tile-img" alt="Georgette">
+          <span>Georgette</span>
+        </div>
+        <div class="circle-tile" onclick="previewSareePair('Pure Chiffon', 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=1000&q=80')">
+          <img src="https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=200&q=80" class="tile-img" alt="Chiffon">
+          <span>Chiffon</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLETE THE LOOK -->
+    <section class="complete-look-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h3 style="font-size: 1.5rem; color: var(--deep-maroon);">Complete the Ensemble</h3>
+          <p style="color: var(--charcoal-muted); font-size: 0.9rem;">Bundle this blouse with a matching Kanchipuram drape and temple earrings</p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 1.6rem; font-weight: 700; color: var(--deep-maroon);">Bundle Price: ₹5,497</div>
+          <button class="btn btn-accent btn-sm" onclick="showToast('Added Complete Look to Cart!')">Shop Complete Look</button>
+        </div>
+      </div>
+
+      <div class="look-items-grid">
+        <div style="display: flex; align-items: center; gap: 12px; background: var(--ivory); padding: 1rem; border-radius: var(--radius-sm);">
+          <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=150&q=80" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-sm);" alt="Blouse">
+          <div>
+            <h5 style="font-size: 0.9rem;">Royal Silk Blouse</h5>
+            <span style="font-weight: 600; color: var(--deep-maroon);">₹1,499</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; background: var(--ivory); padding: 1rem; border-radius: var(--radius-sm);">
+          <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=150&q=80" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-sm);" alt="Saree">
+          <div>
+            <h5 style="font-size: 0.9rem;">Kanchipuram Silk Saree</h5>
+            <span style="font-weight: 600; color: var(--deep-maroon);">₹3,199</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; background: var(--ivory); padding: 1rem; border-radius: var(--radius-sm);">
+          <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=150&q=80" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-sm);" alt="Earrings">
+          <div>
+            <h5 style="font-size: 0.9rem;">Temple Jhumka Earrings</h5>
+            <span style="font-weight: 600; color: var(--deep-maroon);">₹799</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section style="margin-top: 4rem;">
+      <div class="section-heading">
+        <h2>Customer Reviews & Ratings</h2>
+        <p>Read detailed feedback from verified buyers</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <h4>"Superb Stitching & Silk Feel"</h4>
+          <p style="font-size: 0.9rem; color: var(--charcoal-muted);">"The stitching is extraordinarily neat. The cotton lining keeps it very comfortable even for long wedding ceremonies."</p>
+          <div class="review-breakdown">
+            <span><strong>Fit:</strong> 5/5</span>
+            <span><strong>Fabric:</strong> 5/5</span>
+            <span><strong>Design:</strong> 5/5</span>
+          </div>
+          <small>— Sunita Verma (Verified Purchase)</small>
+        </div>
+
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <h4>"Perfect Temple Border Match"</h4>
+          <p style="font-size: 0.9rem; color: var(--charcoal-muted);">"Paired this with my grandmother's vintage Kanchipuram drape. Looked like a custom boutique piece!"</p>
+          <div class="review-breakdown">
+            <span><strong>Fit:</strong> 4.8/5</span>
+            <span><strong>Fabric:</strong> 5/5</span>
+            <span><strong>Design:</strong> 5/5</span>
+          </div>
+          <small>— Kavita Krishnan (Verified Purchase)</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED PRODUCTS ROW -->
+    <section style="margin-top: 4rem;">
+      <div class="section-heading">
+        <h2>You May Also Like</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
+        <div class="product-card" data-id="BL-102">
+          <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80" alt="Banarasi Velvet"></div>
+          <div class="card-body"><h3 class="card-title"><a href="product.html">Banarasi Velvet Zari Blouse</a></h3><div class="price-row"><span class="current-price">₹2,299</span></div><button class="quick-add-btn">+ Quick Add</button></div>
+        </div>
+        <div class="product-card" data-id="BL-103">
+          <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80" alt="Organza Sweetheart"></div>
+          <div class="card-body"><h3 class="card-title"><a href="product.html">Organza Sweetheart Blouse</a></h3><div class="price-row"><span class="current-price">₹1,899</span></div><button class="quick-add-btn">+ Quick Add</button></div>
+        </div>
+        <div class="product-card" data-id="BL-104">
+          <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1596783074918-c84cb06531ca?auto=format&fit=crop&w=600&q=80" alt="Corset Bridal"></div>
+          <div class="card-body"><h3 class="card-title"><a href="product.html">Maroon Corset Bridal Blouse</a></h3><div class="price-row"><span class="current-price">₹3,499</span></div><button class="quick-add-btn">+ Quick Add</button></div>
+        </div>
+        <div class="product-card" data-id="BL-105">
+          <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80" alt="Georgette V-Neck"></div>
+          <div class="card-body"><h3 class="card-title"><a href="product.html">Georgette Sequence V-Neck</a></h3><div class="price-row"><span class="current-price">₹1,699</span></div><button class="quick-add-btn">+ Quick Add</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="searchModal">
+    <div class="search-box-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.4rem;">Search Blouses</h3>
+        <button id="closeSearchModal" style="font-size: 1.5rem; color: var(--charcoal-muted);">&times;</button>
+      </div>
+      <input type="text" placeholder="Search by fabric, neckline, occasion...">
+    </div>
+  </div>
+
+  <!-- Shared Floating WhatsApp Button -->
+  <a href="https://wa.me/91XXXXXXXXXX" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="trust-badges-row">
+        <div class="trust-badge-item"><i class="fas fa-shield-alt"></i><h4>Secure Payment</h4><p>100% Encrypted</p></div>
+        <div class="trust-badge-item"><i class="fas fa-undo-alt"></i><h4>Easy Returns</h4><p>Hassle-Free 10-Day Returns</p></div>
+        <div class="trust-badge-item"><i class="fas fa-cut"></i><h4>Custom Stitching</h4><p>Tailored precisely</p></div>
+        <div class="trust-badge-item"><i class="fas fa-award"></i><h4>Quality Checked</h4><p>Double Quality Inspection</p></div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Shop & Create</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Catalog</a></li>
+            <li><a href="design-your-blouse.html">Custom Design Studio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Customer Support</h3>
+          <ul class="footer-links">
+            <li><a href="size-guide.html">Size Guide & Fit</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="about.html">About ProudeWear</a></li>
+            <li><a href="about.html#craftsmanship">Artisan Heritage</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Newsletter</h3>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email">
+            <button class="btn btn-accent btn-sm" onclick="showToast('Subscribed to ProudeWear!')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 ProudeWear. All Rights Reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Product Hydration Logic
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id') || 'BL-301'; // Default if none
+    
+    // Check if products exist in global scope from products.js
+    let productData = null;
+    if (typeof getProducts === 'function') {
+      const products = getProducts();
+      productData = products.find(p => p.id === productId);
+    }
+    
+    if (productData) {
+      document.getElementById('pageTitle').textContent = productData.title + ' | ProudeWear';
+      document.getElementById('breadcrumbName').textContent = productData.title;
+      document.getElementById('detailTitle').textContent = productData.title;
+      document.getElementById('detailPrice').textContent = '₹' + productData.price.toLocaleString();
+      
+      if (productData.originalPrice) {
+        document.getElementById('detailOriginalPrice').textContent = '₹' + productData.originalPrice.toLocaleString();
+      }
+      
+      if (productData.badge) {
+        const badge = document.getElementById('detailBadge');
+        badge.style.display = 'inline-block';
+        badge.textContent = productData.badge;
+      }
+      
+      document.getElementById('detailStars').textContent = '★'.repeat(productData.rating) + '☆'.repeat(5 - productData.rating);
+      document.getElementById('detailReviews').textContent = `(${productData.reviews} Verified Customer Reviews)`;
+      
+      document.getElementById('specFabric').textContent = productData.fabric || 'Designer';
+      document.getElementById('specNeckline').textContent = productData.neckline || 'Classic';
+      document.getElementById('specOccasion').textContent = productData.occasion || 'Special Event';
+      
+      const mainImg = document.getElementById('mainProductImg');
+      if (mainImg) mainImg.src = productData.image;
+    }
+
+    function swapImage(thumb, newSrc) {
+      document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      document.getElementById('mainProductImg').src = newSrc;
+    }
+
+    function previewSareePair(fabricName, newSrc) {
+      document.getElementById('mainProductImg').src = newSrc;
+      showToast(`Previewing pairing with ${fabricName} Saree`);
+    }
+
+    function updateQty(delta) {
+      const qtyInput = document.getElementById('productQty');
+      let val = parseInt(qtyInput.value) + delta;
+      if (val < 1) val = 1;
+      qtyInput.value = val;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Option selector click handlers
+      ['sizeOptions', 'sleeveOptions', 'backOptions'].forEach(groupId => {
+        const container = document.getElementById(groupId);
+        container?.querySelectorAll('.opt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.tagName === 'A') return; // custom size link
+            container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          });
+        });
+      });
+
+      // Add to Cart Main Button
+      document.getElementById('addToCartMainBtn')?.addEventListener('click', () => {
+        const selectedSize = document.querySelector('#sizeOptions .opt-btn.active')?.textContent || 'M';
+        const selectedSleeve = document.querySelector('#sleeveOptions .opt-btn.active')?.textContent || 'Short';
+        const selectedBack = document.querySelector('#backOptions .opt-btn.active')?.textContent || 'Keyhole';
+        const qty = parseInt(document.getElementById('productQty').value) || 1;
+
+        const item = {
+          id: productData ? productData.id : 'BL-XX',
+          name: productData ? productData.title : 'Custom Blouse',
+          price: productData ? productData.price : 0,
+          image: productData ? productData.image : '',
+          size: selectedSize,
+          sleeve: selectedSleeve,
+          back: selectedBack,
+          quantity: qty,
+          fabric: productData ? productData.fabric : 'Custom'
+        };
+
+        addToCart(item);
+      });
+
+      // Wishlist Main Button
+      document.getElementById('mainWishlistBtn')?.addEventListener('click', () => {
+        const item = {
+          id: 'BL-301',
+          name: 'Royal Kanchipuram Silk Blouse',
+          price: 1499,
+          image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+          rating: '4.9 ★'
+        };
+        toggleWishlist(item);
+      });
+    });
+  </script>
+</body>
+</html>

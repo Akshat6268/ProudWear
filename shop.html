@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Catalog | ProudeWear</title>
+  <meta name="description"
+    content="Explore our complete catalog of bespoke saree blouses. Filter by neckline, sleeve, fabric, occasion, and style. Custom stitching available.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .filter-sidebar {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      align-self: start;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-group {
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .filter-group-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      color: var(--deep-maroon);
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      cursor: pointer;
+    }
+
+    .filter-checkbox input[type="checkbox"] {
+      accent-color: var(--deep-maroon);
+      width: 16px;
+      height: 16px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--charcoal-muted);
+      margin-top: 1.5rem;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--deep-maroon);
+    }
+
+    .shop-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .active-chips-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .shop-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-sidebar {
+        position: static;
+        display: none;
+      }
+
+      .filter-sidebar.mobile-open {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    Complimentary Global Express Delivery on Couture Orders Above ₹2,999
+  </div>
+
+  <!-- Shared Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="site-logo">
+        <img src="images/logo.png" alt="Proude Wear" class="site-logo-img">
+      </a>
+
+      <!-- Minimalist Navigation Links: Shop | Custom Design | About -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="design-your-blouse.html" class="nav-link">Design Your Blouse</a></li>
+          <li><a href="size-guide.html" class="nav-link">Size Guide</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="admin panel/index.html" class="nav-link" style="color: var(--deep-maroon); font-weight: bold;"><i class="fas fa-lock"></i> Admin</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="header-actions">
+        <button class="action-icon trigger-search" aria-label="Search"><i class="fas fa-search"></i></button>
+        <button class="action-icon theme-toggle" aria-label="Toggle Dark Mode" style="font-size: 1.1rem;"><i class="fas fa-moon"></i></button>
+        <a href="cart.html" class="action-icon" aria-label="Cart">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-count cart-badge">0</span>
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span class="text-maroon">Shop Catalog</span>
+    </div>
+
+    <!-- Page Title -->
+    <div style="margin-top: 1rem;">
+      <h1 style="font-size: 2.2rem; color: var(--deep-maroon);">Saree Blouse Catalog</h1>
+      <p style="color: var(--charcoal-muted);">Explore hand-crafted designer blouses with customizable stitching options
+      </p>
+    </div>
+
+    <!-- Active Filter Chips -->
+    <div class="active-chips-bar" id="activeFilterChips">
+      <!-- Injected dynamically via JS -->
+    </div>
+
+    <!-- Shop Layout Grid -->
+    <div class="shop-layout">
+      <!-- Left Sidebar Filters -->
+      <aside class="filter-sidebar" id="filterSidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+          <h3 style="font-size: 1.2rem; color: var(--deep-maroon);">Filter By</h3>
+          <button id="clearAllFilters"
+            style="font-size: 0.85rem; color: var(--antique-gold); text-decoration: underline;">Clear All</button>
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group">
+          <div class="filter-group-title">Category <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="New Arrivals"> New
+              Arrivals</label>
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="Trending"> Trending</label>
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="Bridal"> Bridal</label>
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="Designer"> Designer</label>
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="Traditional">
+              Traditional</label>
+            <label class="filter-checkbox"><input type="checkbox" name="category" value="Sale"> Sale</label>
+          </div>
+        </div>
+
+        <!-- Neckline -->
+        <div class="filter-group">
+          <div class="filter-group-title">Neckline <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Sweetheart"> Sweetheart</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Boat Neck"> Boat Neck</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="V-Neck"> V-Neck</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Round Neck"> Round Neck</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Square Neck"> Square
+              Neck</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Halter"> Halter</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="High Neck"> High Neck</label>
+            <label class="filter-checkbox"><input type="checkbox" name="neckline" value="Keyhole"> Keyhole</label>
+          </div>
+        </div>
+
+        <!-- Sleeve -->
+        <div class="filter-group">
+          <div class="filter-group-title">Sleeve <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Sleeveless"> Sleeveless</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Short"> Short</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Elbow"> Elbow</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Full"> Full</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Puff"> Puff</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Bell"> Bell</label>
+            <label class="filter-checkbox"><input type="checkbox" name="sleeve" value="Cape"> Cape</label>
+          </div>
+        </div>
+
+        <!-- Style -->
+        <div class="filter-group">
+          <div class="filter-group-title">Style <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Corset"> Corset</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Peplum"> Peplum</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Backless"> Backless</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Bridal"> Bridal</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Embroidered"> Embroidered</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Contemporary">
+              Contemporary</label>
+            <label class="filter-checkbox"><input type="checkbox" name="style" value="Traditional"> Traditional</label>
+          </div>
+        </div>
+
+        <!-- Fabric -->
+        <div class="filter-group">
+          <div class="filter-group-title">Fabric <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Silk"> Silk</label>
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Banarasi"> Banarasi</label>
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Georgette"> Georgette</label>
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Chiffon"> Chiffon</label>
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Cotton"> Cotton</label>
+            <label class="filter-checkbox"><input type="checkbox" name="fabric" value="Designer"> Designer</label>
+          </div>
+        </div>
+
+        <!-- Occasion -->
+        <div class="filter-group">
+          <div class="filter-group-title">Occasion <i class="fas fa-chevron-down"></i></div>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Bridal"> Bridal</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Wedding Guest"> Wedding
+              Guest</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Reception"> Reception</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Festive"> Festive</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Party"> Party</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Casual"> Casual</label>
+            <label class="filter-checkbox"><input type="checkbox" name="occasion" value="Office"> Office</label>
+          </div>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="filter-group">
+          <div class="filter-group-title">Max Price (₹)</div>
+          <input type="range" id="priceRange" min="1000" max="6000" step="250" value="6000"
+            style="width: 100%; accent-color: var(--deep-maroon);">
+          <div
+            style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--charcoal-muted); margin-top: 4px;">
+            <span>₹1,000</span>
+            <span id="priceVal">₹6,000</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Catalog Content -->
+      <section>
+        <!-- Shop Header Controls -->
+        <div class="shop-header-bar">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button class="btn btn-secondary btn-sm" id="toggleMobileFilter" style="display: none;">
+              <i class="fas fa-filter"></i> Filters
+            </button>
+            <span id="productCount" style="font-size: 0.95rem; color: var(--charcoal-muted);">Showing 12 Blouses</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="sortDropdown" style="font-size: 0.9rem; color: var(--charcoal-muted);">Sort by:</label>
+            <select id="sortDropdown"
+              style="padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--white); cursor: pointer;">
+              <option value="popularity">Popularity</option>
+              <option value="low-high">Price: Low to High</option>
+              <option value="high-low">Price: High to Low</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 12 Product Cards Grid -->
+        <div id="productGrid"
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.8rem;">
+          <!-- Products will be injected here dynamically by JS -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="searchModal">
+    <div class="search-box-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.4rem;">Search Blouses</h3>
+        <button id="closeSearchModal" style="font-size: 1.5rem; color: var(--charcoal-muted);">&times;</button>
+      </div>
+      <input type="text" placeholder="Search by fabric, neckline, occasion...">
+    </div>
+  </div>
+
+  <!-- Shared Floating WhatsApp Button -->
+  <a href="https://wa.me/9111752952" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Shared Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="trust-badges-row">
+        <div class="trust-badge-item"><i class="fas fa-shield-alt"></i>
+          <h4>Secure Payment</h4>
+          <p>100% Encrypted Payment Gateways</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-undo-alt"></i>
+          <h4>Easy Returns</h4>
+          <p>Hassle-Free 10-Day Returns & Alterations</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-cut"></i>
+          <h4>Custom Stitching</h4>
+          <p>Tailored precisely to your body measurements</p>
+        </div>
+        <div class="trust-badge-item"><i class="fas fa-award"></i>
+          <h4>Quality Checked</h4>
+          <p>Double Quality Inspection before Dispatch</p>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Shop & Create</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Catalog</a></li>
+            <li><a href="design-your-blouse.html">Custom Design Studio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Customer Support</h3>
+          <ul class="footer-links">
+            <li><a href="size-guide.html">Size Guide & Fit</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="cart.html">Shopping Cart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="about.html">About ProudeWear</a></li>
+            <li><a href="about.html#craftsmanship">Artisan Heritage</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Newsletter</h3>
+          <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">
+            Subscribe for exclusive runway updates and bespoke collection releases.
+          </p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email address">
+            <button class="btn btn-accent btn-sm" onclick="showToast('Subscribed to ProudeWear!')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>&copy; 2026 ProudeWear. All Rights Reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Shop Page Filtering & URL Query Parameter Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const activeChipsBar = document.getElementById('activeFilterChips');
+      const checkboxes = document.querySelectorAll('.filter-checkbox input');
+      const priceRange = document.getElementById('priceRange');
+      const priceVal = document.getElementById('priceVal');
+      const sortDropdown = document.getElementById('sortDropdown');
+      const productGrid = document.getElementById('productGrid');
+      let productCards = []; // Will hold DOM elements of generated cards
+      const productCount = document.getElementById('productCount');
+      const clearAllBtn = document.getElementById('clearAllFilters');
+
+      // Fetch products from products.js (localStorage)
+      const products = getProducts();
+
+      // Render Products Dynamically
+      function renderProducts() {
+        productGrid.innerHTML = ''; // Clear grid
+        products.forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.dataset.id = product.id;
+          card.dataset.neckline = product.neckline || '';
+          card.dataset.fabric = product.fabric || '';
+          card.dataset.occasion = product.occasion || '';
+          card.dataset.sleeve = product.sleeve || '';
+          card.dataset.price = product.price;
+          
+          let starsHtml = '★'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+          
+          card.innerHTML = `
+            <div class="card-img-wrap">
+              ${product.badge ? `<span class="badge">${product.badge}</span>` : ''}
+              <img src="${product.image}" alt="${product.title}">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title"><a href="product.html?id=${product.id}">${product.title}</a></h3>
+              <div class="rating-row"><span class="stars">${starsHtml}</span><span class="reviews-count">(${product.reviews})</span></div>
+              <div class="price-row"><span class="current-price">₹${product.price.toLocaleString()}</span><span class="original-price">₹${product.originalPrice ? product.originalPrice.toLocaleString() : ''}</span></div>
+              <button class="quick-add-btn">+ Quick Add</button>
+            </div>
+          `;
+          productGrid.appendChild(card);
+        });
+
+        productCards = Array.from(document.querySelectorAll('#productGrid .product-card'));
+      }
+
+      renderProducts();
+
+      // Pre-check filters based on URL parameters
+      ['neckline', 'occasion', 'sleeve', 'fabric', 'category', 'style'].forEach(param => {
+        const val = urlParams.get(param);
+        if (val) {
+          const matchingInput = Array.from(checkboxes).find(cb => cb.name === param && cb.value.toLowerCase() === val.toLowerCase());
+          if (matchingInput) matchingInput.checked = true;
+        }
+      });
+
+      // Price slider display
+      priceRange?.addEventListener('input', (e) => {
+        priceVal.textContent = '₹' + parseInt(e.target.value).toLocaleString();
+        filterProducts();
+      });
+
+      checkboxes.forEach(cb => cb.addEventListener('change', filterProducts));
+      sortDropdown?.addEventListener('change', sortProducts);
+      clearAllBtn?.addEventListener('click', () => {
+        checkboxes.forEach(cb => cb.checked = false);
+        priceRange.value = 6000;
+        priceVal.textContent = '₹6,000';
+        filterProducts();
+      });
+
+      function filterProducts() {
+        const selectedFilters = {};
+        checkboxes.forEach(cb => {
+          if (cb.checked) {
+            if (!selectedFilters[cb.name]) selectedFilters[cb.name] = [];
+            selectedFilters[cb.name].push(cb.value.toLowerCase());
+          }
+        });
+
+        const maxPrice = parseInt(priceRange.value);
+        let visibleCount = 0;
+
+        productCards.forEach(card => {
+          const cardPrice = parseInt(card.dataset.price);
+          let matches = true;
+
+          if (cardPrice > maxPrice) matches = false;
+
+          for (const key in selectedFilters) {
+            const cardAttr = (card.dataset[key] || '').toLowerCase();
+            if (selectedFilters[key].length > 0 && !selectedFilters[key].includes(cardAttr)) {
+              matches = false;
+            }
+          }
+
+          if (matches) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        productCount.textContent = `Showing ${visibleCount} Blouses`;
+        renderActiveChips(selectedFilters);
+      }
+
+      function renderActiveChips(filters) {
+        activeChipsBar.innerHTML = '';
+        for (const key in filters) {
+          filters[key].forEach(val => {
+            const chip = document.createElement('span');
+            chip.className = 'chip-btn active';
+            chip.innerHTML = `${val} <span class="close-chip" data-name="${key}" data-val="${val}">&times;</span>`;
+            activeChipsBar.appendChild(chip);
+          });
+        }
+      }
+
+      activeChipsBar.addEventListener('click', (e) => {
+        if (e.target.classList.contains('close-chip')) {
+          const name = e.target.dataset.name;
+          const val = e.target.dataset.val;
+          const cb = Array.from(checkboxes).find(c => c.name === name && c.value.toLowerCase() === val.toLowerCase());
+          if (cb) {
+            cb.checked = false;
+            filterProducts();
+          }
+        }
+      });
+
+      function sortProducts() {
+        const mode = sortDropdown.value;
+        const visibleCards = productCards.filter(c => c.style.display !== 'none');
+
+        visibleCards.sort((a, b) => {
+          const priceA = parseInt(a.dataset.price);
+          const priceB = parseInt(b.dataset.price);
+          if (mode === 'low-high') return priceA - priceB;
+          if (mode === 'high-low') return priceB - priceA;
+          return 0; // Default order
+        });
+
+        visibleCards.forEach(c => productGrid.appendChild(c));
+      }
+
+      // Initial filter check
+      filterProducts();
+    });
+  </script>
+</body>
+
+</html>
